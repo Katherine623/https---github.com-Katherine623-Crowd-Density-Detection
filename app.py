@@ -66,6 +66,22 @@ elif option == '上傳影片':
             stframe.image(cv2.cvtColor(result_img, cv2.COLOR_BGR2RGB), channels='RGB')
         cap.release()
 
+elif option == '影片連結':
+    video_url = st.text_input('請貼上影片連結（mp4/avi/mov 直連網址）')
+    if video_url:
+        cap = cv2.VideoCapture(video_url)
+        stframe = st.empty()
+        if not cap.isOpened():
+            st.error('無法開啟影片連結，請確認網址正確且為公開影片。')
+        else:
+            while cap.isOpened():
+                ret, frame = cap.read()
+                if not ret:
+                    break
+                result_img = detect_and_draw(frame, model)
+                stframe.image(cv2.cvtColor(result_img, cv2.COLOR_BGR2RGB), channels='RGB')
+            cap.release()
+
 elif option == '拍照':
     camera_img = st.camera_input('請拍照上傳')
     if camera_img is not None:
