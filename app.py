@@ -40,7 +40,7 @@ def detect_and_draw(img, model):
 
 model = YOLO('yolov8n.pt')
 
-option = st.radio('選擇輸入來源', ['上傳圖片', '上傳影片', '開啟相機'])
+option = st.radio('選擇輸入來源', ['上傳圖片', '上傳影片', '拍照'])
 
 if option == '上傳圖片':
     uploaded_file = st.file_uploader('請上傳圖片', type=['jpg', 'jpeg', 'png'])
@@ -66,15 +66,11 @@ elif option == '上傳影片':
             stframe.image(cv2.cvtColor(result_img, cv2.COLOR_BGR2RGB), channels='RGB')
         cap.release()
 
-elif option == '開啟相機':
-    st.warning('請在本地端執行：streamlit run main.py，才能開啟相機功能。')
-    if st.button('啟動相機'):
-        cap = cv2.VideoCapture(0)
-        stframe = st.empty()
-        while True:
-            ret, frame = cap.read()
-            if not ret:
-                break
-            result_img = detect_and_draw(frame, model)
-            stframe.image(cv2.cvtColor(result_img, cv2.COLOR_BGR2RGB), channels='RGB')
-        cap.release()
+elif option == '拍照':
+    camera_img = st.camera_input('請拍照上傳')
+    if camera_img is not None:
+        image = Image.open(camera_img).convert('RGB')
+        img_np = np.array(image)
+        img_bgr = cv2.cvtColor(img_np, cv2.COLOR_RGB2BGR)
+        result_img = detect_and_draw(img_bgr, model)
+        st.image(cv2.cvtColor(result_img, cv2.COLOR_BGR2RGB), caption='偵測結果', use_column_width=True)
