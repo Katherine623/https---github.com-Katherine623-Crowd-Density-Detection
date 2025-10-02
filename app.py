@@ -40,7 +40,7 @@ def detect_and_draw(img, model):
 
 model = YOLO('yolov8n.pt')
 
-option = st.radio('選擇輸入來源', ['上傳圖片', '上傳影片', '拍照'])
+option = st.radio('選擇輸入來源', ['上傳圖片', '上傳影片', '影片連結', '拍照'])
 
 if option == '上傳圖片':
     uploaded_file = st.file_uploader('請上傳圖片', type=['jpg', 'jpeg', 'png'])
