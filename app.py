@@ -159,8 +159,9 @@ def run_video(cap):
 
         stframe.image(cv2.cvtColor(vis, cv2.COLOR_BGR2RGB), channels='RGB')
 
+
 # 影片：本地上傳
-elif option == '上傳影片':
+if option == '上傳影片':
     uploaded_video = st.file_uploader('請上傳影片', type=['mp4', 'avi', 'mov'])
     if uploaded_video is not None:
         tfile = tempfile.NamedTemporaryFile(delete=False)
